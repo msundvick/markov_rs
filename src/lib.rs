@@ -101,30 +101,21 @@ where
     /// If you want to initialize the chain of states, use
     /// [`initialize()`](#method.initialize) methods.
     pub fn next(&mut self) -> &T {
-        let elem_index = self.next_elem_index();
-        self.prev_index = elem_index;
-        self.state_space
-            .get(elem_index)
-            .expect("There is no state that should exist.")
+        let mut rng = rand::thread_rng();
+        self.next_rng(&mut rng)
     }
 
-    /// Returns the index of the next output state.
-    fn next_elem_index(&mut self) -> usize {
-        let row = self.get_prev_index();
-        self.wa_table[row].next()
-    }
-
-    /// Returns the index of the previous output state.
-    ///
-    /// If the value of `prev_index` is equal to the length of
-    /// `state_space`, update it with a randomly generated value.
-    fn get_prev_index(&self) -> usize {
-        if self.prev_index == self.state_space.len() {
-            let mut rng = rand::thread_rng();
-            rng.gen::<usize>() % self.state_space.len()
-        } else {
+    pub fn next_rng(&mut self, rng: &mut ThreadRng) -> &T {
+        let row = {
+            if self.prev_index == self.state_space.len() {
+                self.prev_index = rng.gen_range(0..self.state_space.len());
+            }
             self.prev_index
-        }
+        };
+        let elem_index = self.wa_table[row].next_rng(rng);
+
+        self.prev_index = elem_index;
+        &self.state_space[elem_index]
     }
 
     /// Initialize the index with the length of `state_space`.
