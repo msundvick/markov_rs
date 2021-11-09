@@ -149,13 +149,34 @@ mod markov_test {
         let expected = MarkovChain {
             state_space: vec!["I", "boy", "is", "that", "think", "wrong", "wrote"],
             wa_table: vec![
-                WalkerTable::new(vec![4, 4, 4, 4, 4, 4, 4], vec![1, 1, 1, 1, 1, 1, 1], 1),
-                WalkerTable::new(vec![6, 6, 6, 6, 6, 6, 6], vec![1, 1, 1, 1, 1, 1, 1], 1),
-                WalkerTable::new(vec![5, 5, 5, 5, 5, 5, 5], vec![1, 1, 1, 1, 1, 1, 1], 1),
-                WalkerTable::new(vec![3, 1, 3, 1, 3, 3, 3], vec![5, 5, 5, 2, 5, 5, 5], 5),
-                WalkerTable::new(vec![3, 3, 3, 3, 3, 3, 3], vec![1, 1, 1, 1, 1, 1, 1], 1),
-                WalkerTable::new(vec![0, 0, 0, 0, 0, 0, 0], vec![0, 0, 0, 0, 0, 0, 0], 1),
-                WalkerTable::new(vec![2, 2, 2, 2, 2, 2, 2], vec![1, 1, 1, 1, 1, 1, 1], 1),
+                WalkerTable::new(
+                    vec![4, 4, 4, 4, 4, 4, 4],
+                    vec![1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                ),
+                WalkerTable::new(
+                    vec![6, 6, 6, 6, 6, 6, 6],
+                    vec![1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                ),
+                WalkerTable::new(
+                    vec![5, 5, 5, 5, 5, 5, 5],
+                    vec![1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                ),
+                WalkerTable::new(
+                    vec![3, 1, 3, 1, 3, 3, 3],
+                    vec![1.0, 1.0, 1.0, 0.4, 1.0, 1.0, 1.0],
+                ),
+                WalkerTable::new(
+                    vec![3, 3, 3, 3, 3, 3, 3],
+                    vec![1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                ),
+                WalkerTable::new(
+                    vec![0, 0, 0, 0, 0, 0, 0],
+                    vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                ),
+                WalkerTable::new(
+                    vec![2, 2, 2, 2, 2, 2, 2],
+                    vec![1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                ),
             ],
             prev_index: 7,
         };
