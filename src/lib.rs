@@ -84,7 +84,7 @@ where
             prev_index = Some(cur_index);
         }
 
-        let mut wa_table = Vec::new();
+        let mut wa_table = Vec::with_capacity(space_len);
         for row in freq_table {
             let builder = WalkerTableBuilder::new(&row);
             wa_table.push(builder.build());
