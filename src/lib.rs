@@ -143,9 +143,9 @@ mod markov_test {
 
         let include = TEXT
             .iter()
-            .fold(0, |acc, cur| if **element == **cur { acc + 1 } else { acc });
+            .fold(false, |acc, cur| if acc { acc } else { element == cur });
 
-        assert_eq!(include, 1)
+        assert!(include)
     }
 
     #[test]
