@@ -2,9 +2,34 @@
 
 A simple Markov chain generator in Rust.
 
+By using Walker's Alias Method, a weighted random sampling algorithm, the model can generate elements very quickly.
+
 ## Usage
 
+Add this to your Cargo.toml:
+
+```toml
+[dependencies]
+markov_rs = "0.1"
+```
+
 ## Example
+
+```rust
+use markov_rs::MarkovChain;
+
+fn main() {
+    let text = vec![
+        "I", "think", "that", "that", "that", "that", "that", "boy", "wrote", "is", "wrong",
+    ];
+
+    let mut model = MarkovChain::from(&text);
+
+    for _ in 0..20 {
+        print!("{} ", model.next());
+    }
+}
+```
 
 ## License
 
