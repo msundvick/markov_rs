@@ -1,6 +1,6 @@
 //! # markov_rs
 //!
-//! A simple Markov chain generator in Rust.
+//! A simple and fast Markov chain generator in Rust.
 //!
 //! By using Walker's Alias Method, a weighted random sampling
 //! algorithm, the model can generate elements very quickly.

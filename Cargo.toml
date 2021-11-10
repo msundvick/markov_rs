@@ -2,7 +2,7 @@
 name = "markov_rs"
 version = "0.1.0"
 authors = ["Ichi Hazuki <ichi.h3@gmail.com>"]
-description = "A simple Markov chain generator in Rust."
+description = "A simple and fast Markov chain generator in Rust."
 documentation = "https://docs.rs/markov_rs"
 homepage = "https://github.com/ichi-h/markov_rs"
 repository = "https://github.com/ichi-h/markov_rs"
