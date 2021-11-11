@@ -92,7 +92,7 @@ where
         MarkovChain::new(state_space, wa_table, space_len)
     }
 
-    /// Returns the next possible state.
+    /// Returns a next possible state.
     ///
     /// The first state will be determined randomly, and the next
     /// one will be chosen by its state space.
@@ -104,6 +104,7 @@ where
         self.next_rng(&mut rng)
     }
 
+    /// Returns a next possible state using an external [`ThreadRng`].
     pub fn next_rng(&mut self, rng: &mut ThreadRng) -> &T {
         let row = {
             if self.prev_index == self.state_space.len() {
@@ -117,7 +118,7 @@ where
         &self.state_space[elem_index]
     }
 
-    /// Initialize the index with the length of `state_space`.
+    /// Initializes `prev_index` with the length of `state_space`.
     pub fn initialize(&mut self) {
         self.prev_index = self.state_space.len();
     }
