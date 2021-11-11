@@ -11,11 +11,10 @@
 //! use markov_rs::MarkovChain;
 //!
 //! fn main() {
-//!     let text = vec![
+//!     let text = [
 //!         "I", "think", "that", "that", "that", "that", "that", "boy", "wrote", "is", "wrong",
 //!     ];
 //!     let mut model = MarkovChain::from(&text);
-//!
 //!     for _ in 0..20 {
 //!         print!("{} ", model.next());
 //!     }
@@ -60,12 +59,12 @@ where
         }
     }
 
-    /// Builds a new model from [`Vec<T>`].
+    /// Builds a new model from [`&[T]`].
     ///
     /// `T` must implement [`Clone`], [`Eq`], [`Ord`], [`PartialOrd`]
     /// and [`PartialEq`] traits.
-    pub fn from(elements: &Vec<T>) -> MarkovChain<T> {
-        let mut state_space = elements.clone();
+    pub fn from(elements: &[T]) -> MarkovChain<T> {
+        let mut state_space = elements.to_vec();
         state_space.sort();
         state_space.dedup();
 
@@ -135,7 +134,7 @@ mod markov_test {
 
     #[test]
     fn make_markov_model() {
-        let actual = MarkovChain::from(&TEXT.to_vec());
+        let actual = MarkovChain::from(&TEXT);
 
         let expected = MarkovChain {
             state_space: vec!["I", "boy", "is", "that", "think", "wrong", "wrote"],
@@ -177,7 +176,7 @@ mod markov_test {
 
     #[test]
     fn generate_element() {
-        let mut model = MarkovChain::from(&TEXT.to_vec());
+        let mut model = MarkovChain::from(&TEXT);
         let element = model.next();
 
         let include = TEXT
@@ -189,7 +188,7 @@ mod markov_test {
 
     #[test]
     fn initialize() {
-        let mut model = MarkovChain::from(&TEXT.to_vec());
+        let mut model = MarkovChain::from(&TEXT);
 
         model.next();
         let before = model.prev_index;

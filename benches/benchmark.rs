@@ -14,17 +14,15 @@ const LIST: Lazy<Vec<i32>> = Lazy::new(|| {
 });
 
 fn bench_wam_constructor(c: &mut Criterion) {
-    let vector = LIST.to_vec();
-    c.bench_function("wam_constructor", |b| b.iter(|| MarkovChain::from(&vector)));
+    c.bench_function("wam_constructor", |b| b.iter(|| MarkovChain::from(&LIST)));
 }
 
 fn bench_cdf_constructor(c: &mut Criterion) {
-    let vector = LIST.to_vec();
-    c.bench_function("cdf_constructor", |b| b.iter(|| MarkovCSM::from(&vector)));
+    c.bench_function("cdf_constructor", |b| b.iter(|| MarkovCSM::from(&LIST)));
 }
 
 fn bench_generate_element_by_wam(c: &mut Criterion) {
-    let mut model = MarkovChain::from(&LIST.to_vec());
+    let mut model = MarkovChain::from(&LIST);
 
     let mut result = [0; 100_000];
     let mut rng = rand::thread_rng();
@@ -39,7 +37,7 @@ fn bench_generate_element_by_wam(c: &mut Criterion) {
 }
 
 fn bench_generate_element_by_cdf(c: &mut Criterion) {
-    let mut model = MarkovCSM::from(&LIST.to_vec());
+    let mut model = MarkovCSM::from(&LIST);
 
     let mut result = [0; 100_000];
     let mut rng = rand::thread_rng();
@@ -91,8 +89,8 @@ where
         }
     }
 
-    pub fn from(elements: &Vec<T>) -> MarkovCSM<T> {
-        let mut non_dup_elements = elements.clone();
+    pub fn from(elements: &[T]) -> MarkovCSM<T> {
+        let mut non_dup_elements = elements.to_vec();
         non_dup_elements.sort();
         non_dup_elements.dedup();
 
