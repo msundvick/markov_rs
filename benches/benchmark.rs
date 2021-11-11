@@ -6,12 +6,11 @@ use criterion::Criterion;
 use criterion::{criterion_group, criterion_main};
 
 const LIST: Lazy<Vec<i32>> = Lazy::new(|| {
-    let mut vector = vec![0; 10000];
     let mut rng = rand::thread_rng();
-    for v in &mut vector {
-        *v = rng.gen_range(0..1000);
-    }
-    vector
+    (0..10000)
+        .map(|_| rng.gen_range(0..1000))
+        .collect::<Vec<i32>>()
+        .to_vec()
 });
 
 fn bench_wam_constructor(c: &mut Criterion) {
