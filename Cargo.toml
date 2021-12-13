@@ -1,7 +1,7 @@
 [package]
 name = "markov_rs"
 version = "0.1.2"
-authors = ["Ichi Hazuki <ichi.h3@gmail.com>"]
+authors = ["ichi-h <ichi.h3@gmail.com>"]
 description = "A simple and fast Markov chain generator in Rust."
 documentation = "https://docs.rs/markov_rs"
 homepage = "https://github.com/ichi-h/markov_rs"
