@@ -5,47 +5,112 @@ use once_cell::sync::Lazy;
 use criterion::Criterion;
 use criterion::{criterion_group, criterion_main};
 
-const LIST: Lazy<Vec<i32>> = Lazy::new(|| {
-    let mut rng = rand::thread_rng();
-    (0..10000)
-        .map(|_| rng.gen_range(0..1000))
-        .collect::<Vec<i32>>()
-        .to_vec()
+const LONG_TEXT: Lazy<Vec<&str>> = Lazy::new(|| {
+    const TEXT: &str = include_str!("../assets/long_text.txt");
+    TEXT.split(" ").collect()
 });
 
-fn bench_wam_constructor(c: &mut Criterion) {
-    c.bench_function("wam_constructor", |b| b.iter(|| MarkovChain::from(&LIST)));
+const MIDDLE_TEXT: Lazy<Vec<&str>> = Lazy::new(|| {
+    const TEXT: &str = include_str!("../assets/middle_text.txt");
+    TEXT.split(" ").collect()
+});
+
+const SHORT_TEXT: Lazy<Vec<&str>> = Lazy::new(|| {
+    const TEXT: &str = include_str!("../assets/short_text.txt");
+    TEXT.split(" ").collect()
+});
+
+fn bench_create_wam_model(c: &mut Criterion) {
+    c.bench_function("create_wam_model_from_short_text", |b| {
+        b.iter(|| MarkovChain::from(&SHORT_TEXT))
+    });
+
+    c.bench_function("create_wam_model_from_middle_text", |b| {
+        b.iter(|| MarkovChain::from(&MIDDLE_TEXT))
+    });
+
+    c.bench_function("create_wam_model_from_long_text", |b| {
+        b.iter(|| MarkovChain::from(&LONG_TEXT))
+    });
 }
 
-fn bench_cdf_constructor(c: &mut Criterion) {
-    c.bench_function("cdf_constructor", |b| b.iter(|| MarkovCSM::from(&LIST)));
+fn bench_create_cdf_model(c: &mut Criterion) {
+    c.bench_function("create_cdf_model_from_short_text", |b| {
+        b.iter(|| MarkovCSM::from(&SHORT_TEXT))
+    });
+
+    c.bench_function("create_cdf_model_from_middle_text", |b| {
+        b.iter(|| MarkovCSM::from(&MIDDLE_TEXT))
+    });
+
+    c.bench_function("create_cdf_model_from_long_text", |b| {
+        b.iter(|| MarkovCSM::from(&LONG_TEXT))
+    });
 }
 
-fn bench_generate_element_by_wam(c: &mut Criterion) {
-    let mut model = MarkovChain::from(&LIST);
+fn bench_generate_element_using_wam(c: &mut Criterion) {
+    let mut model_1 = MarkovChain::from(&SHORT_TEXT);
+    let mut model_2 = MarkovChain::from(&MIDDLE_TEXT);
+    let mut model_3 = MarkovChain::from(&LONG_TEXT);
 
-    let mut result = [0; 100_000];
+    let mut result = [""; 10];
+
     let mut rng = rand::thread_rng();
 
-    c.bench_function("generate_element_by_wam", |b| {
+    c.bench_function("generate_element_from_short_text_using_wam", |b| {
         b.iter(|| {
             for r in &mut result {
-                *r = *model.next_rng(&mut rng);
+                *r = model_1.next_rng(&mut rng);
+            }
+        })
+    });
+
+    c.bench_function("generate_element_from_middle_text_using_wam", |b| {
+        b.iter(|| {
+            for r in &mut result {
+                *r = model_2.next_rng(&mut rng);
+            }
+        })
+    });
+
+    c.bench_function("generate_element_from_long_text_using_wam", |b| {
+        b.iter(|| {
+            for r in &mut result {
+                *r = model_3.next_rng(&mut rng);
             }
         })
     });
 }
 
-fn bench_generate_element_by_cdf(c: &mut Criterion) {
-    let mut model = MarkovCSM::from(&LIST);
+fn bench_generate_element_using_cdf(c: &mut Criterion) {
+    let mut model_1 = MarkovCSM::from(&SHORT_TEXT);
+    let mut model_2 = MarkovCSM::from(&MIDDLE_TEXT);
+    let mut model_3 = MarkovCSM::from(&LONG_TEXT);
 
-    let mut result = [0; 100_000];
+    let mut result = [""; 10];
+
     let mut rng = rand::thread_rng();
 
-    c.bench_function("generate_element_by_cdf", |b| {
+    c.bench_function("generate_element_from_short_text_using_cdf", |b| {
         b.iter(|| {
             for r in &mut result {
-                *r = *model.next_rng(&mut rng);
+                *r = model_1.next_rng(&mut rng);
+            }
+        })
+    });
+
+    c.bench_function("generate_element_from_middle_text_using_cdf", |b| {
+        b.iter(|| {
+            for r in &mut result {
+                *r = model_2.next_rng(&mut rng);
+            }
+        })
+    });
+
+    c.bench_function("generate_element_from_long_text_using_cdf", |b| {
+        b.iter(|| {
+            for r in &mut result {
+                *r = model_3.next_rng(&mut rng);
             }
         })
     });
@@ -53,10 +118,10 @@ fn bench_generate_element_by_cdf(c: &mut Criterion) {
 
 criterion_group!(
     benches,
-    bench_wam_constructor,
-    bench_cdf_constructor,
-    bench_generate_element_by_wam,
-    bench_generate_element_by_cdf,
+    bench_create_wam_model,
+    bench_create_cdf_model,
+    bench_generate_element_using_wam,
+    bench_generate_element_using_cdf,
 );
 criterion_main!(benches);
 
