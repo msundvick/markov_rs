@@ -5,27 +5,37 @@
 [![docs.rs](https://img.shields.io/docsrs/markov_rs)](https://docs.rs/markov_rs)
 [![Crates.io](https://img.shields.io/crates/l/markov_rs)](LICENSE-APACHE)
 
-A simple and fast Markov chain generator in Rust.
+A simple and fast Markov Chain generator in Rust.
 
-By using the Walker's Alias Method, a weighted random sampling algorithm, the model can generate elements very quickly. The benchmark for this crate and the Markov chain using the Cumulative Sum Method is as follows.
+By using the Walker's Alias Method (WAM), a weighted random sampling algorithm, the model can generate elements very quickly. For details about the WAM, see [ichi-h / weighted_rand](https://github.com/ichi-h/weighted_rand).
 
-|       Algorithm       | Building model | Generation |
-| :-------------------: | :------------: | :--------: |
-| Walker's Alias Method |   117.15 ms    | 9.2078 ms  |
-| Cumulative Sum Method |   8.3087 ms    | 168.02 ms  |
+## Benchmark
 
-- Building model
-  - The time to create a Markov chain model from a stored array of random values from 0 to 999 with a length of 10000.
-- Generation
-  - The time to generate 100,000 elements from the above model.
-- Environment
-  - OS: Windows 11 Home Insider Preview
-  - CPU: Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz
-  - RAM: 16.0 GB
-  - Rust version: rustc 1.56.1
-  - Source code: [benchmark.rs](benches/benchmark.rs)
+The benchmark for this crate and the Markov Chain using the Cumulative Distribution Function (CDF) is as follows.
 
-For details about the Walker's Alias Method, see [ichi-h / weighted_rand](https://github.com/ichi-h/weighted_rand).
+### Environment
+
+- OS: Windows 11 Home Insider Preview
+- CPU: Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz
+- RAM: 16.0 GB
+- Rust version: rustc 1.56.1
+- Source code: [benchmark.rs](benches/benchmark.rs)
+
+### Create Markov Chain model
+
+The time to create a Markov Chain model from each of the dummy texts of 100, 500, and 1000 words.
+
+![create_model](imgs/create_model.jpg)
+
+For both models, the generation time increases as the number of words in the text increases, but the slope of the time is larger for the WAM.
+
+### Generate elements
+
+The time to generate 10 elements from the above models.
+
+![generate_elements](imgs/generate_elements.jpg)
+
+The CDF is slower to generate elements as the number of words in the text increases, but the WAM remains fast regardless.
 
 ## Usage
 
@@ -55,7 +65,7 @@ fn main() {
 ## Planned
 
 - Improve performance of model building.
-- Support for Nth-order Markov chain.
+- Support for Nth-order Markov Chain.
 
 ## License
 
