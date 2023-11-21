@@ -105,7 +105,7 @@ where
     }
 
     /// Returns a next possible state using an external [`ThreadRng`].
-    pub fn next_rng(&mut self, rng: &mut ThreadRng) -> &T {
+    pub fn next_rng<R: Rng>(&mut self, rng: &mut R) -> &T {
         let row = {
             if self.prev_index == self.state_space.len() {
                 self.prev_index = rng.gen_range(0..self.state_space.len());
